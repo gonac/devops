@@ -34,22 +34,22 @@ controllers:
             - controller_stats.avg_disk_usage
             - controller_stats.avg_mem_usage
      metrics_endpoint_config:
-         influxdb:
-             enable: True
-             server: 169.254.0.1
-             server_port: 8086
-             protocol: http
-             db: avi
-             #_comment":"Change metric_prefix only if you need to define a prefix",
-             metric_prefix: ""
-             #_comment":"If using auth on influxdb set auth-enabled to true and modify the credential values",
-             auth-enabled: False
-             username: admin
-             password: password
-         wavefront:
-             enable: True
-             instance: x.x.x.x.x.wavefront.com
-             api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
+         - type: influxdb
+           enable: True
+           server: 169.254.0.1
+           server_port: 8086
+           protocol: http
+           db: avi
+           #_comment":"Change metric_prefix only if you need to define a prefix",
+           metric_prefix: ""
+           #_comment":"If using auth on influxdb set auth-enabled to true and modify the credential values",
+           auth-enabled: False
+           username: admin
+           password: password
+         - type: wavefront
+           enable: True
+           instance: x.x.x.x.x.wavefront.com
+           api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
 
 
 
@@ -76,22 +76,22 @@ controllers:
          controller_metrics: True
          controller_runtime: True
      metrics_endpoint_config:
-         elasticsearch:
-             enable: True
-             server: 169.254.0.1
-             server_port: 9200
-             protocol : https
-             index: avimetrics
-             #_comment:default time filter field name,
-             timestamp: "@timestamp"
-             #_comment:If using auth on elasticsearch set auth-enabled to true and modify the credential values
-             auth-enabled: False
-             username: admin
-             password: password
-         datadog:
-             enable: False
-             api_url: app.datadoghq.com/api/v1/series?api_key=
-             api_key: abcdefghijgklmnopqrstuvwxyz12345
+         - type: elasticsearch
+           enable: True
+           server: 169.254.0.1
+           server_port: 9200
+           protocol : https
+           index: avimetrics
+           #_comment:default time filter field name,
+           timestamp: "@timestamp"
+           #_comment:If using auth on elasticsearch set auth-enabled to true and modify the credential values
+           auth-enabled: False
+           username: admin
+           password: password
+         - type: datadog
+           enable: False
+           api_url: app.datadoghq.com/api/v1/series?api_key=
+           api_key: abcdefghijgklmnopqrstuvwxyz12345
                       
              
              
@@ -103,7 +103,7 @@ controllers:
 #
 #
 ##----------appdynamics------------
-appdynamics_http:
+    type: appdynamics_http
     enable: False
     server: 169.254.0.1
     server_port: 8293
@@ -111,7 +111,7 @@ appdynamics_http:
 #
 #
 ##----------datadog------------
-datadog:
+    type: datadog
     enable: False
     api_url: app.datadoghq.com/api/v1/series?api_key=
     api_key: abcdefghijgklmnopqrstuvwxyz12345
@@ -119,7 +119,7 @@ datadog:
 #
 #
 ##----------elasticsearch------------
-elasticsearch:
+    type: elasticsearch
     enable: False
     server: 169.254.0.1
     server_port: 9200
@@ -135,7 +135,7 @@ elasticsearch:
 #
 #
 ##----------graphite------------
-graphite:
+    type: graphite
     enable: False
     server: 169.254.0.1
     server_port: 2003
@@ -143,7 +143,7 @@ graphite:
 #
 #
 ##----------influxdb------------
-influxdb:
+    type: influxdb
     enable: False
     server: 169.254.0.1
     server_port: 8086
@@ -159,7 +159,7 @@ influxdb:
 #
 #
 ##----------logstash------------
-logstash:
+    type: logstash
     enable: False
     #_comment": "logstash codec => json_lines"
     server: 169.254.0.1
@@ -170,7 +170,7 @@ logstash:
 #
 #
 ##----------splunk hec------------
-splunk:
+    type: splunk
     enable: False
     server: 169.254.0.1
     #_comment:"HEC_PROTOCOL OPTIONS ARE HTTP OR HTTPS",
@@ -184,7 +184,7 @@ splunk:
 #
 #
 ##----------wavefront------------
-wavefront:
+    type: wavefront
     enable: False
     instance: xxxxxxxx.wavefront.com
     #_comment:  If using direct ingestion specify an api_key, if no key then wavefront proxy will be used
