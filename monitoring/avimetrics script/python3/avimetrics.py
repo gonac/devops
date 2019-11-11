@@ -61,8 +61,8 @@ def determine_endpoint_type(configuration):
         ]
     endpoint_list = []
     for a in configuration:
-        if a['type'].lower() in endpoint_types and configuration[a]['enable'] == True:
-                endpoint_info = configuration[a]
+        if a['type'].lower() in endpoint_types and a['enable'] == True:
+                endpoint_info = a
                 endpoint_info['type'] = a['type'].lower()
                 endpoint_list.append(endpoint_info)   
     if len(endpoint_list) == 0:

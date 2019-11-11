@@ -4,7 +4,7 @@
 ############################################################
 
 # Set the base image to alpine:edge
-FROM alpine:edge
+FROM alpine:3.10
 
 # Set the working directory
 WORKDIR /usr/src/avi
