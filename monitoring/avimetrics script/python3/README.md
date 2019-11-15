@@ -1622,7 +1622,7 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-     appdynamics_http:
+       - type: appdynamics_http
          enable: True
          server: 169.254.0.1
          server_port: 8293     
@@ -1643,10 +1643,10 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-         datadog:
-             enable: True
-             api_url: app.datadoghq.com/api/v1/series?api_key=
-             api_key: abcdefghijgklmnopqrstuvwxyz12345  
+      - type: datadog
+        enable: True
+        api_url: app.datadoghq.com/api/v1/series?api_key=
+        api_key: abcdefghijgklmnopqrstuvwxyz12345  
 ```
 
 
@@ -1664,7 +1664,7 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-     elasticsearch:
+       - type: elasticsearch
          enable: True
          server: 169.254.0.1
          server_port: 9200
@@ -1691,10 +1691,10 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-         graphite:
-             enable: True
-             server: 169.254.0.1
-             server_port: 2003
+       - type:  graphite
+         enable: True
+         server: 169.254.0.1
+         server_port: 2003
 ```
 
 
@@ -1712,7 +1712,7 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-     influxdb:
+       - type: influxdb
          enable: True
          server: 169.254.0.1
          server_port: 8086
@@ -1739,7 +1739,7 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-     logstash:
+       - type: logstash
          enable: True
          server: 169.254.0.1
          server_port: 517
@@ -1763,14 +1763,14 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-        splunk:
-            enable: True
-            server: 169.254.0.1
-            hec_protocol: https
-            hec_port: 8088
-            hec_token: abcdefgh-ijkl-mnop-qrst-uvwxyz123456
-            index_type: event
-            index: avi:metrics
+       - type: splunk
+         enable: True
+         server: 169.254.0.1
+         hec_protocol: https
+         hec_port: 8088
+         hec_token: abcdefgh-ijkl-mnop-qrst-uvwxyz123456
+         index_type: event
+         index: avi:metrics
 ```
 
 
@@ -1788,7 +1788,7 @@ controllers:
      avi_user: admin
      avi_pass: password
      metrics_endpoint_config:
-     wavefront:
+       - type: wavefront
          enable: True
          instance: xxxxxxxx.wavefront.com
          #_comment:  If using direct ingestion specify an api_key, if no key then wavefront proxy will be used
@@ -1829,20 +1829,21 @@ controllers:
             - controller_stats.avg_disk_usage
             - controller_stats.avg_mem_usage
      metrics_endpoint_config:
-         influxdb:
-             enable: True
-             server: 169.254.0.10
-             server_port: 8086
-             protocol: http
-             db: avi
-             metric_prefix: ""
-             auth-enabled: False
-             username: admin
-             password: password
-         wavefront:
-             enable: True
-             instance: xxxxxxxx.wavefront.com
-             api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
+       - type: influxdb
+         enable: True
+         server: 169.254.0.10
+         server_port: 8086
+         protocol: http
+         db: avi
+         metric_prefix: ""
+         auth-enabled: False
+         username: admin
+         password: password
+       - type: wavefront
+         enable: True
+         instance: xxxxxxxx.wavefront.com
+         api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
+
 
    - avi_cluster_name: demo_controller2
      avi_controller: 169.254.0.2
@@ -1856,10 +1857,10 @@ controllers:
          controller_metrics: True
          controller_runtime: True
      metrics_endpoint_config:
-         wavefront:
-             enable: True
-             instance: xxxxxxxx.wavefront.com
-             proxy_port: 2878
+         - type: wavefront
+           enable: True
+           instance: xxxxxxxx.wavefront.com
+           proxy_port: 2878
 ```
 
 

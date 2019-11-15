@@ -103,94 +103,94 @@ controllers:
 #
 #
 ##----------appdynamics------------
-    type: appdynamics_http
-    enable: False
-    server: 169.254.0.1
-    server_port: 8293
+#  - type: appdynamics_http
+#    enable: False
+#    server: 169.254.0.1
+#    server_port: 8293
 #
 #
 #
 ##----------datadog------------
-    type: datadog
-    enable: False
-    api_url: app.datadoghq.com/api/v1/series?api_key=
-    api_key: abcdefghijgklmnopqrstuvwxyz12345
+#  - type: datadog
+#    enable: False
+#    api_url: app.datadoghq.com/api/v1/series?api_key=
+#    api_key: abcdefghijgklmnopqrstuvwxyz12345
 #
 #
 #
 ##----------elasticsearch------------
-    type: elasticsearch
-    enable: False
-    server: 169.254.0.1
-    server_port: 9200
-    protocol : https
-    index: avimetrics
-    #_comment:default time filter field name,
-    timestamp: "@timestamp"
-    #_comment:If using auth on elasticsearch set auth-enabled to true and modify the credential values
-    auth-enabled: True
-    username: admin
-    password: password
+#  - type: elasticsearch
+#    enable: False
+#    server: 169.254.0.1
+#    server_port: 9200
+#    protocol : https
+#    index: avimetrics
+#    #_comment:default time filter field name,
+#    timestamp: "@timestamp"
+#    #_comment:If using auth on elasticsearch set auth-enabled to true and modify the credential values
+#    auth-enabled: True
+#    username: admin
+#    password: password
 #
 #
 #
 ##----------graphite------------
-    type: graphite
-    enable: False
-    server: 169.254.0.1
-    server_port: 2003
+#  - type: graphite
+#    enable: False
+#    server: 169.254.0.1
+#    server_port: 2003
 #
 #
 #
 ##----------influxdb------------
-    type: influxdb
-    enable: False
-    server: 169.254.0.1
-    server_port: 8086
-    protocol: https
-    db: avi
-    #_comment":"Change metric_prefix only if you need to define a prefix",
-    metric_prefix: ""
-    #_comment":"If using auth on influxdb set auth-enabled to true and modify the credential values",
-    auth-enabled: False
-    username: admin
-    password: password
+#  - type: influxdb
+#    enable: False
+#    server: 169.254.0.1
+#    server_port: 8086
+#    protocol: https
+#    db: avi
+#    #_comment":"Change metric_prefix only if you need to define a prefix",
+#    metric_prefix: ""
+#    #_comment":"If using auth on influxdb set auth-enabled to true and modify the credential values",
+#    auth-enabled: False
+#    username: admin
+#    password: password
 #
 #
 #
 ##----------logstash------------
-    type: logstash
-    enable: False
-    #_comment": "logstash codec => json_lines"
-    server: 169.254.0.1
-    server_port: 517
-    #_comment": "tcp or udp"
-    protocol: udp
+#  - type: logstash
+#    enable: False
+#    #_comment": "logstash codec => json_lines"
+#    server: 169.254.0.1
+#    server_port: 517
+#    #_comment": "tcp or udp"
+#    protocol: udp
 #
 #
 #
 ##----------splunk hec------------
-    type: splunk
-    enable: False
-    server: 169.254.0.1
-    #_comment:"HEC_PROTOCOL OPTIONS ARE HTTP OR HTTPS",
-    hec_protocol: https
-    hec_port: 8088
-    hec_token: abcdefgh-ijkl-mnop-qrst-uvwxyz123456
-    #_comment":"INDEX TYPE EVENT OR METRIC"
-    index_type: event
-    index: avi:metrics
+#  - type: splunk
+#    enable: False
+#    server: 169.254.0.1
+#    #_comment:"HEC_PROTOCOL OPTIONS ARE HTTP OR HTTPS",
+#    hec_protocol: https
+#    hec_port: 8088
+#    hec_token: abcdefgh-ijkl-mnop-qrst-uvwxyz123456
+#    #_comment":"INDEX TYPE EVENT OR METRIC"
+#    index_type: event
+#    index: avi:metrics
 #
 #
 #
 ##----------wavefront------------
-    type: wavefront
-    enable: False
-    instance: xxxxxxxx.wavefront.com
-    #_comment:  If using direct ingestion specify an api_key, if no key then wavefront proxy will be used
-    #api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
-    #_comment:  If using proxy specify the listening port, if not defined defaults to 2878
-    proxy_port: 2878
+#  - type: wavefront
+#    enable: False
+#    instance: xxxxxxxx.wavefront.com
+#    #_comment:  If using direct ingestion specify an api_key, if no key then wavefront proxy will be used
+#    #api_key: 12a345bc-de6f-789a-0bcd-ef1234a5bcd6
+#    #_comment:  If using proxy specify the listening port, if not defined defaults to 2878
+#    proxy_port: 2878
 #
 #
 #
