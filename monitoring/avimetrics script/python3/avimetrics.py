@@ -1,7 +1,7 @@
 #!/opt/local/bin/python3
 
 
-version = 'v2019-09-25'
+version = 'v2019-11-12'
 
 
 
@@ -104,7 +104,10 @@ class avi_metrics():
         #self.payload_template['environment'] = self.host_environment
         self.payload_template['avicontroller'] = self.avi_cluster_name
         if controller_config.get('metrics_endpoint_config') == None:
-            self.endpoint_list = determine_endpoint_type([])
+            if global_endpoint_config != None:
+                self.endpoint_list = determine_endpoint_type(global_endpoint_config)
+            else:   
+                self.endpoint_list = determine_endpoint_type([])
         else:
             self.endpoint_list = determine_endpoint_type(controller_config['metrics_endpoint_config'])
         #------        
@@ -1497,7 +1500,7 @@ class avi_metrics():
                     }
                     ]}
             api_url = 'analytics/metrics/collection?pad_missing_data=false&dimension_limit=1000&include_name=true&include_refs=true'
-            resp = self.avi_post(api_url,tenant,payload)
+            resp = self.avi_post(api_url,tenant,payload).json()
             if self.pool_realtime == True:
                 payload = {
                     "metric_requests": [
@@ -1513,13 +1516,13 @@ class avi_metrics():
                         }
                         ]}
                 realtime_stats = self.avi_post('analytics/metrics/collection?pad_missing_data=false&dimension_limit=1000&include_name=true&include_refs=true', tenant, payload).json()
-            if 'series' in resp.json():
-                if len(resp.json()['series']['collItemRequest:AllServers']) != 0:
-                    for p in resp.json()['series']['collItemRequest:AllServers']:
+            if 'series' in resp:
+                if len(resp['series']['collItemRequest:AllServers']) != 0:
+                    for p in resp['series']['collItemRequest:AllServers']:
                         if p not in discovered_servers:
                             discovered_servers.append(p)
                             server_object = p.split(',')[2]
-                            for d in resp.json()['series']['collItemRequest:AllServers'][p]:
+                            for d in resp['series']['collItemRequest:AllServers'][p]:
                                 if 'data' in d:
                                     pool_name = d['header']['pool_ref'].rsplit('#',1)[1]                                            
                                     metric_name = d['header']['name']
@@ -1535,14 +1538,14 @@ class avi_metrics():
                                     if 'entity_ref' in d['header']:
                                         vs_name = d['header']['entity_ref'].rsplit('#',1)[1]
                                         temp_payload['vs_name'] = vs_name
-                                        temp_payload['name_space'] = 'avi||'+self.avi_cluster_name+'||virtualservice||%s||pool||%s||%s||%s' %(vs_name, pool_name, server_object,metric_name)
+                                        temp_payload['name_space'] = 'avi||%s||virtualservice||%s||pool||%s||%s||%s' %(self.avi_cluster_name,vs_name, pool_name, server_object,metric_name)
                                         #endpoint_payload_list.append(temp_payload)
                                     else:
                                         for v in self.pool_dict[d['header']['pool_ref'].rsplit('#',1)[0].split('api/pool/')[1]]['results']['virtualservices']:
                                             vs_name = v.rsplit('#',1)[1]
                                             #temp_payload1 = temp_payload.copy()
                                             temp_payload['vs_name'] = vs_name
-                                            temp_payload['name_space'] = 'avi||'+self.avi_cluster_name+'||virtualservice||%s||pool||%s||%s||%s' %(vs_name, pool_name, server_object,metric_name)
+                                            temp_payload['name_space'] = 'avi||%s||virtualservice||%s||pool||%s||%s||%s' %(self.avi_cluster_name,vs_name, pool_name, server_object,metric_name)
                                     if self.pool_realtime == True:
                                         if 'series' in realtime_stats:
                                             if p in realtime_stats['series']['collItemRequest:AllServers']:
@@ -1755,6 +1758,7 @@ def main():
 if 'EN_DOCKER' in os.environ:
     fdir = os.path.abspath(os.path.dirname(__file__))
     configuration = False
+    global_endpoint_config = None
     if 'EN_CONFIGURATION' in os.environ:
         try:
             import yaml
@@ -1769,6 +1773,8 @@ if 'EN_DOCKER' in os.environ:
         while True:
             loop_start_time = time.time()
             avi_controller_list = configuration['controllers']
+            if 'metrics_endpoint_config' in configuration:
+                global_endpoint_config = configuration['metrics_endpoint_config']
             main()
             loop_total_time = time.time()-loop_start_time
             if loop_total_time < 60:
@@ -1781,12 +1787,15 @@ else:
     try:
         fdir = os.path.abspath(os.path.dirname(__file__))
         configuration = False
+        global_endpoint_config = None
         import yaml
         print(fdir)
         if os.path.isfile(fdir+'/configuration.yaml') == True:
             with open(fdir+'/configuration.yaml', 'r') as yaml_file:
                 configuration = yaml.safe_load(yaml_file)
             #----- Import avi controller info from json file
+            if 'metrics_endpoint_config' in configuration:
+                global_endpoint_config = configuration['metrics_endpoint_config']
             avi_controller_list = configuration['controllers']
             main()
         else:
