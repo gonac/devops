@@ -103,6 +103,9 @@ class avi_metrics():
         #self.payload_template['location'] = self.host_location
         #self.payload_template['environment'] = self.host_environment
         self.payload_template['avicontroller'] = self.avi_cluster_name
+        if controller_config.get('tags') != None:
+            for k,v in controller_config['tags'].items():
+                self.payload_template[k] = v
         if controller_config.get('metrics_endpoint_config') == None:
             if global_endpoint_config != None:
                 self.endpoint_list = determine_endpoint_type(global_endpoint_config)
