@@ -1,6 +1,6 @@
-# Avi Metrics Script
+# Avi Metrics Collection
 
-The Avi Metrics script was built with the intent to pull metrics from one or more Avi controllers and send these values to a centralized metrics database(s).
+The Avi Metrics Collection script was built with the intent to pull metrics from one or more Avi controllers and send these values to a centralized time series database(s).
 The script supports a number of different endpoints; current support includes AppDynamics, Datadog, Elasticsearch, Graphite, InfluxDB, Logstash, Splunk, and Wavefront.
 
 
@@ -23,6 +23,7 @@ This repository includes that necessary files to deploy a centralized metrics sc
 
 
 
+<br></br>
 
 # Installation
 The following files are required and must exist within the same directory for successful metric gathering.
@@ -31,9 +32,9 @@ The following files are required and must exist within the same directory for su
 - **metrics_endpoints.py**
 
 
+<br></br>
 
-
-# Usage
+# Local Script Usage
 ## avimetrics.py
 
 The metrics script will look in the local directory for the configuration.yaml file.  Using the values from this file the script will pull the relevant data from the Avi Controller API and forward the values to the defined metrics endpoints.
@@ -42,15 +43,16 @@ The metrics script will look in the local directory for the configuration.yaml f
 $ python3 avimetrics.py
 ```
 
-
+<br></br>
 # Run as a container
-To run this script as a container, modify the files as exampled above prior to building.
 
-### Build the container
+
+### <strong>Build the container</strong>
+Using the included dockerfile
 ```sh
 $ docker build -t avimetrics .
 ```
-### Start the container
+### <strong>Start the container</strong>
 To start the container it is required to specify the configuration via the <strong>EN_CONFIGURATION</strong> environment variable.  
 
 Here is an example for using the contents of a local configuration.yaml as the value for EN_CONFIGURATION when creating the local container.
@@ -59,7 +61,7 @@ Here is an example for using the contents of a local configuration.yaml as the v
 $ docker run -d --name avimetrics --restart always --log-opt max-size=1m -e "EN_CONFIGURATION=$(<configuration.yaml)"  avinetworks/avimetrics:3
 ```
 
-
+<br></br>
 # configuration.yaml
 
 The configuration.yaml file will include the parameters to define what data values are desired for each Avi Controller cluster.  Within the configuration.yaml file, you will define controller(s) within a list under the key "controllers".  For each controller entry the following values are available:
@@ -534,7 +536,7 @@ The configuration.yaml file will include the parameters to define what data valu
 <td colspan="3">
 <b>metrics_endpoint_confiig</b>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+<span style="color: purple">list</span>                 
 </div>
 </td>
 </div>
@@ -542,24 +544,38 @@ The configuration.yaml file will include the parameters to define what data valu
 <td>
 </td>
 <td>
-<div>Parameters for defining desired endpoints for the metrics</div>
+<div>List of one or more metric endpoint types, see the table below for endpoint type specific configurations</div>
 </td>
 </tr>
 
+</tbody>
+</table>
+
+
+
+<br></br>
+# metric endpoint types
+Each metric endpoint type is a dictionary added as a list item for to the metrics_endpoint_confiig key in the configuration.yaml
+
+- - -
+
+## Appdynamics
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
 <tr>
-<td>
 </td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>appdynamics_http</b>
+
+<td >
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
 </div>
 </td>
-</div>
-</td>
-<td>
-</td>
+<td><b>appdynamics_http</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 <td>
 <div>Parameters for sending data to appdynamics http endpoint listener</div>
 </td>
@@ -567,12 +583,8 @@ The configuration.yaml file will include the parameters to define what data valu
 
 
 <tr>
+
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -590,12 +602,8 @@ The configuration.yaml file will include the parameters to define what data valu
 </tr>
 
 <tr>
-<td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
+
+<td colspan="">
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -609,14 +617,10 @@ The configuration.yaml file will include the parameters to define what data valu
 <div>IP or FQDN for the Appdynamics HTTP endpoint listener</div>
 </td>
 </tr>
-
 <tr>
+
+
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>  
@@ -630,34 +634,45 @@ The configuration.yaml file will include the parameters to define what data valu
 <div>Listening port for the Appdynamics HTTP endpoint listener</div>
 </td>
 </tr>
+</tbody>
+</table>
 
+
+- - -
+<br></br>
+## Datadog
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</div>
+</td>
+
+
+<div style="font-size: small">                
+</div>
+</td>
+</div>
+</td>
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>datadog</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
 </div>
 </td>
+<td><b>datadog</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to datadog</div>
 </td>
 </tr>
-
-
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -672,14 +687,8 @@ The configuration.yaml file will include the parameters to define what data valu
 <div>Enable sending metrics to datadog</div>
 </td>
 </tr>
-
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>api_url</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -696,11 +705,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>api_key</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -715,19 +719,32 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </tr>
 
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Elasticsearch
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
+
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>elasticsearch</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>elasticsearch</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 </div>
 </td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to elasticsearch</div>
@@ -737,11 +754,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -759,12 +771,8 @@ The configuration.yaml file will include the parameters to define what data valu
 </tr>
 
 <tr>
-<td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
+
+<td >
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -781,11 +789,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>  
@@ -802,11 +805,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>protocol</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -824,11 +822,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>index</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -845,11 +838,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>timestamp</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -866,11 +854,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>auth-enabled</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -888,11 +871,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>username</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                 
@@ -908,11 +886,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>password</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                 
@@ -925,34 +898,39 @@ The configuration.yaml file will include the parameters to define what data valu
 <div>If auth-enabled is True, password provided for authentication to elasticsearch</div>
 </td>
 </tr>
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Graphite
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
 
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>graphite</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>graphite</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 </div>
 </td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to graphite</div>
 </td>
 </tr>
-
-
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -971,11 +949,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -992,11 +965,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>  
@@ -1011,14 +979,29 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </tr>
 
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Influxdb
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
+
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>influxdb</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>influxdb</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 </div>
 </td>
 </div>
@@ -1033,11 +1016,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -1056,11 +1034,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1098,11 +1071,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>protocol</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1120,11 +1088,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>db</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1141,11 +1104,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>metric_prefix</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                  
@@ -1161,11 +1119,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>auth-enabled</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>                 
@@ -1182,11 +1135,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>username</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                 
@@ -1202,11 +1150,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>password</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                 
@@ -1220,19 +1163,32 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </tr>
 
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Logstash
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
+
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>logstash</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>logstash</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>             
 </div>
 </td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to logstash</div>
@@ -1242,11 +1198,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -1265,11 +1216,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1286,11 +1232,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>  
@@ -1307,11 +1248,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>protocol</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                
@@ -1326,19 +1262,32 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </tr>
 
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Splunk
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
+
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>splunk</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>splunk</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>             
 </div>
 </td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to Splunk HEC</div>
@@ -1348,11 +1297,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -1371,11 +1315,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>server</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1392,11 +1331,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>hec_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>  
@@ -1413,11 +1347,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>hec_protocol</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>      
@@ -1435,11 +1364,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>hec_token</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1456,11 +1380,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>index_type</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1478,11 +1397,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>index</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1497,19 +1411,32 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </tr>
 
+</tbody>
+</table>
+
+- - -
+<br></br>
+## Wavefront
+<table class="documentation-table" cellpadding="0" border="0">
+    <tbody><tr>
+        <th>Parameter</th>
+        <th>Choices/<font color="blue">Defaults</font></th>
+        <th width="100%">Comments</th>
+<tr>
+</td>
+
 <tr>
 <td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="2">
-<b>wavefront</b>
+<b>type</b><br><div style="font-size: small"><span style="color: red">
+required</span>
 <div style="font-size: small">
-<span style="color: purple">dictionary</span>                 
+</div>
+</td>
+<td><b>wavefront</b><br><div style="font-size: small"><span style="color: red">
+required</span></td>
 </div>
 </td>
 </div>
-</td>
-<td>
 </td>
 <td>
 <div>Parameters for sending metrics to Wavefront</div>
@@ -1519,11 +1446,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>enable</b>
 <div style="font-size: small">
 <span style="color: purple">boolean</span>  
@@ -1542,11 +1464,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>instance</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>  
@@ -1563,11 +1480,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>api_key</b>
 <div style="font-size: small">
 <span style="color: purple">string</span>                  
@@ -1583,11 +1495,6 @@ The configuration.yaml file will include the parameters to define what data valu
 
 <tr>
 <td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
-<td colspan="1">
 <b>proxy_port</b>
 <div style="font-size: small">
 <span style="color: purple">integer</span>                
@@ -1600,13 +1507,11 @@ The configuration.yaml file will include the parameters to define what data valu
 <div>If using Wavefront proxy, listening port for proxy</div>
 </td>
 </tr>
-
-
 </tbody>
 </table>
 
 
-
+<br></br><br></br>
 # metrics_endpoint_config examples
 
 ## appdynamics_http
