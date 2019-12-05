@@ -1,10 +1,10 @@
 # Avi Metrics Collection
 
-The Avi Metrics Collection script was built with the intent to pull metrics from one or more Avi controllers and send these values to a centralized time series database(s).
+The Avi Metrics Collection script was built with the intent to pull metrics from one or more Avi controllers and send these values to a centralized time series database.
 The script supports a number of different endpoints; current support includes AppDynamics, Datadog, Elasticsearch, Graphite, InfluxDB, Logstash, Splunk, and Wavefront.
 
 
-This repository includes that necessary files to deploy a centralized metrics script
+This repository includes that necessary files to deploy a centralized metrics collection script
 - **Requirements**
     - **python 3.6+**
     - **python3-yaml**
@@ -44,6 +44,7 @@ $ python3 avimetrics.py
 ```
 
 <br></br>
+
 # Run as a container
 
 
@@ -151,6 +152,24 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 <td>
 <div>Password that will be used to authenticate to Avi controller cluster</div>
+</td>
+</tr>
+
+<tr>
+<td class="elbow-placeholder"></td>
+<td colspan="3">
+<b>tags</b>
+<div style="font-size: small">
+<span style="color: purple">dictionary</span>
+                    
+</div>
+</td>
+</div>
+</td>
+<td>
+</td>
+<td>
+<div>Optional dictionary of key:value pairs that will be added to them metrics data being sent to the metrics endpoints</div>
 </td>
 </tr>
 
@@ -1006,8 +1025,7 @@ required</span></td>
 </td>
 </div>
 </td>
-<td>
-</td>
+
 <td>
 <div>Parameters for sending metrics to influxdb</div>
 </td>
@@ -1049,11 +1067,7 @@ required</span></td>
 </tr>
 
 <tr>
-<td>
-</td>
-<td>
-</td>
-<td class="elbow-placeholder"></td>
+
 <td colspan="1">
 <b>server_port</b>
 <div style="font-size: small">
@@ -1714,6 +1728,9 @@ controllers:
      avi_controller: 169.254.0.1
      avi_user: admin
      avi_pass: password
+     tags:
+         environment: dev
+         location: datacenter1
      virtualservice_stats_config:
          virtualservice_metrics: True
          virtualservice_realtime: True

@@ -6,6 +6,9 @@ controllers:
      avi_user: admin
      #comment: ACCEPTS PLAIN TEXT OR BASE64 ENCODED PASSWORD
      avi_pass: password
+     tags:
+      environment: dev
+      location: datacenter1      
      #comment: Realtime metrics will cause the script to take longer to complete, optional
      virtualservice_stats_config:
          virtualservice_metrics: True
