@@ -14,7 +14,7 @@ This repository includes that necessary files to deploy a centralized metrics co
 - **Files**
     - **avimetrics.py**:  This is the script that will pull the values from the Avi Controller API and forward to the metrics enpoints
     - **metrics_endpoints.py**:  This file contains the methods for formatting the data and sending to the defined metrics endpoint(s)
-    - **configuration_example.yaml**:  This is an example a <strong> required </strong> configuration.yaml file.  Further details around are found below.
+    - **configuration_example.yaml**:  This is an example of a <strong> required </strong> configuration.yaml file.  Further details covering configuration options are found below.
     - **dockerfile**:  This file contains the commands to build a container  
 
 
@@ -26,7 +26,7 @@ This repository includes that necessary files to deploy a centralized metrics co
 <br></br>
 
 # Installation
-The following files are required and must exist within the same directory for successful metric gathering.
+The following files are required and must exist within the same directory for successful metric collection.
 - **avimetrics.py**
 - **configuration.yaml**
 - **metrics_endpoints.py**
@@ -265,7 +265,7 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </div>
 </td>
-<td><strong>Default:</strong> Script contains a list of default virtualservice metric.  List provided further within this document
+<td><strong>Default:</strong> Collection script contains a list of default virtualservice metric.  List provided further within this document
 </td>
 <td>
 <div>List of virtualservice metrics to pull from API</div>
@@ -365,7 +365,7 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </div>
 </td>
-<td><strong>Default:</strong> Script contains a list of default serviceengine metric.  List provided further within this document
+<td><strong>Default:</strong> Collection script contains a list of default serviceengine metric.  List provided further within this document
 </td>
 <td>
 <div>List of serviceengine metrics to pull from API</div>
@@ -464,7 +464,7 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </div>
 </td>
-<td><strong>Default:</strong> Script contains a list of default pool metric.  List provided further within this document
+<td><strong>Default:</strong> Collection script contains a list of default pool metric.  List provided further within this document
 </td>
 <td>
 <div>List of pool metrics to pull from API</div>
@@ -542,7 +542,7 @@ The configuration.yaml file will include the parameters to define what data valu
 </td>
 </div>
 </td>
-<td><strong>Default:</strong> Script contains a list of default controller metric.  List provided further within this document
+<td><strong>Default:</strong> Collection script contains a list of default controller metric.  List provided further within this document
 </td>
 <td>
 <div>List of controller metrics to pull from API</div>
