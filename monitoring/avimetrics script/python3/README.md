@@ -12,7 +12,7 @@ This repository includes that necessary files to deploy a centralized metrics co
 
 
 - **Files**
-    - **avimetrics.py**:  This is the script that will pull the values from the Avi Controller API and forward to the metrics enpoints
+    - **avimetrics.py**:  The collection script that will retrieve values from the Avi Controller API and forward to the metrics enpdoints
     - **metrics_endpoints.py**:  This file contains the methods for formatting the data and sending to the defined metrics endpoint(s)
     - **configuration_example.yaml**:  This is an example of a <strong> required </strong> configuration.yaml file.  Further details covering configuration options are found below.
     - **dockerfile**:  This file contains the commands to build a container  
